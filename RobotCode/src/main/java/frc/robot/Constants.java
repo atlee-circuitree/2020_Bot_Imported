@@ -41,6 +41,8 @@ public final class Constants {
   public static int leftAxis = 0;
   public static int rightAxis = 0;
 
+  public static double encoderCountsPerInch = 17.9651440395;
+
   //Compressors
 
   public static final int Compressor = 1;

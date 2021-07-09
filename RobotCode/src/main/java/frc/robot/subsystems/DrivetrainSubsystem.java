@@ -13,10 +13,13 @@ package frc.robot.subsystems;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 //import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants; // Added by Panten 3/6/2020
 //import frc.robot.Constants.DriveConstants;
@@ -32,6 +35,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -47,11 +51,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DifferentialDrive robotDrive;
     AHRS ahrs;
 
+    TrajectoryConfig trajectoryConfig;
+    Trajectory trajectory; 
+
     CANSparkMax left_frontmotor;
     CANSparkMax left_backmotor;
     CANSparkMax right_frontmotor;
     CANSparkMax right_backmotor;
 
+    DifferentialDriveOdometry odometry;
+
+    SimpleMotorFeedforward feedForward;
+
+    PIDController leftPIDController;
+    PIDController rightPIDController;
+
+    DifferentialDriveKinematics kinematics;
 
     PIDController turnController;
 
@@ -234,29 +249,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
      *
      * @return The pose.
      */
-    public Pose2d getPose() {
-        return m_odometry.getPoseMeters();
-    }
-
-    /**
-     * Returns the current wheel speeds of the robot.
-     *
-     * @return The current wheel speeds.
-     */
-    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
-    }
-
-    /**
-     * Resets the odometry to the specified pose.
-     *
-     * @param pose The pose to which to set the odometry.
-     */
-    public void resetOdometry(Pose2d pose) {
-        resetEncoders();
-        //ahrs.zeroYaw();
-        m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-    }
 
     /**
      * Drives the robot using arcade controls.
@@ -274,11 +266,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * @param leftVolts  the commanded left output
      * @param rightVolts the commanded right output
      */
-    public void tankDriveVolts(double leftVolts, double rightVolts) {
-        leftDrive.setVoltage(leftVolts);
-        rightDrive.setVoltage(-rightVolts);
-        m_drive.feed();
-    }
 
     /**
      * Resets the drive encoders to currently read a position of 0.
@@ -344,9 +331,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      *
      * @param maxOutput the maximum output to which the drive will be constrained
      */
-    public void setMaxOutput(double maxOutput) {
-        m_drive.setMaxOutput(maxOutput);
-    }
+   
 
     /**
      * Zeroes the heading of the robot.
@@ -380,5 +365,84 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public double getTurnRate() {
         return ahrs.getRate() * (Constants.kGyroReversed ? -1.0 : 1.0);
     }
+
+    public double getNavxYaw(){
+        return ahrs.getYaw();
+      }
+      public double getNavxRoll(){
+        return ahrs.getRoll();
+      }
+      public double getNavxPitch(){
+        return ahrs.getPitch();
+      }
+      public double getNavxAngle(){
+        return ahrs.getAngle();
+      }
+      public double getNavxVelocityX(){
+        return ahrs.getVelocityX();
+      }
+      public double getNavxVelocityY(){
+        return ahrs.getVelocityY();
+      }
+      public double getNavxVelocityZ(){
+        return ahrs.getVelocityZ();
+      }
+    
+      public double getPIDOutput(){
+        return turnController.calculate(ahrs.getAngle());
+      }
+      public boolean getPIDIsFinished(){
+        return turnController.atSetpoint();
+      }
+      public void setPIDTarget(double setpoint){
+        turnController.setSetpoint(setpoint);
+      }
+    
+      //TRAJECTORY Functions
+      
+      public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+        final double leftFeedforward = feedForward.calculate(speeds.leftMetersPerSecond);
+        final double rightFeedforward = feedForward.calculate(speeds.rightMetersPerSecond);
+    
+        final double leftOutput = leftPIDController.calculate(m_rightEncoder.getVelocity(), speeds.leftMetersPerSecond);
+        final double rightOutput = rightPIDController.calculate(m_rightEncoder.getVelocity(),
+                speeds.rightMetersPerSecond);
+        leftDrive.setVoltage(leftOutput + leftFeedforward);
+        rightDrive.setVoltage(rightOutput + rightFeedforward);
+    }
+
+    public void drive(double xSpeed, double rot) {
+        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+        setSpeeds(wheelSpeeds);
+    }
+
+    public void updateOdometry() {
+        odometry.update(ahrs.getRotation2d(), getEncoderMeters(m_leftEncoder), getEncoderMeters(m_rightEncoder));
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
+    public double getEncoderMeters(CANEncoder encoder){
+        return encoder.getPosition() / Constants.encoderCountsPerInch;
+      }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
+      }
+    
+      public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        odometry.resetPosition(pose, ahrs.getRotation2d());
+      }
+    
+      public void tankDriveVolts(double leftVolts, double rightVolts) {
+        leftDrive.setVoltage(leftVolts);
+        rightDrive.setVoltage(-rightVolts);
+      }
+      public void setMaxOutput(double maxOutput) {
+        robotDrive.setMaxOutput(maxOutput);
+      }
 
 }
