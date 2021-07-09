@@ -60,6 +60,7 @@ import frc.robot.commands.climbHookRetractPnumaticCommand;
 import frc.robot.commands.closeShooterPnumaticCommand;
 import frc.robot.commands.conveyorbeltObstructedCommand;
 import frc.robot.commands.conveyorbeltclearCommand;
+import frc.robot.commands.driveForwardCommand;
 import frc.robot.commands.drivetrainCommand;
 import frc.robot.commands.drivetrainPercentPowerAuto;
 import frc.robot.commands.elevatorMotorCommand;
@@ -292,6 +293,34 @@ public class RobotContainer {
   // This is for autonomous to clear all three balls
 
   private final TimerCommand m_shooterConveyorTimerCommand = new TimerCommand(2000);
+
+  public Command GenerateEncoderDriveCommand(double inches, double speed)
+  {
+
+      double PPR;
+      double GearReduction;
+      double WheelDiameter;
+      double Pi;
+      double CPI;
+
+      PPR = 42;
+      GearReduction = 10.75;
+      WheelDiameter = 8;
+      Pi = 3.1415;
+      CPI = (PPR * GearReduction) / (WheelDiameter * Pi);
+      //451.5, 25.132
+
+
+      double encoder = (inches / 42) * CPI;
+
+      System.out.print("Encoder Target, ");
+      System.out.print(encoder); 
+
+      Command m_driveStraightUntilEncoderValueCommand = new driveForwardCommand(encoder, speed, m_drivetrainSubsystem);
+
+      return m_driveStraightUntilEncoderValueCommand;
+      
+  }
 
   private final runShooter50MotorCommand m_runShooter50MotorCommandAuto = new runShooter50MotorCommand(
       m_shooterMotorSubsystem, true);
@@ -799,7 +828,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (GetTestTrajectoryShort());  //S pattern - 1.5m forwards
+    //return (GetTestTrajectoryShort());  //S pattern - 1.5m forwards
+    return GenerateEncoderDriveCommand(36, .3);
     //return (GetTestTrajectory());  //S pattern - 3m forwards
     //return (GetTestBallRunTrajectory());  //Backwards path - intended to pick up balls from trench
     //return (GetTestReturnBallRunTrajectory());  //return from picking up balls
