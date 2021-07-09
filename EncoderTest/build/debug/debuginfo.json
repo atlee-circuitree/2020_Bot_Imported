@@ -1,5 +1,12 @@
 [
   {
+    "artifact": "frcJava (in project EncoderTest)",
+    "target": "roborio",
+    "debugfile": "frcJava_roborio.debugconfig",
+    "project": "EncoderTest",
+    "language": "java"
+  },
+  {
     "artifact": "frcJava (in project FRC 2021 Test 2-Imported)",
     "target": "roborio",
     "debugfile": "frcJava_roborio.debugconfig",

@@ -830,7 +830,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     //return (GetTestTrajectoryShort());  //S pattern - 1.5m forwards
-    return GenerateEncoderDriveCommand(36, .3);
+    return GenerateEncoderDriveCommand(1, .3);
     //return (GetTestTrajectory());  //S pattern - 3m forwards
     //return (GetTestBallRunTrajectory());  //Backwards path - intended to pick up balls from trench
     //return (GetTestReturnBallRunTrajectory());  //return from picking up balls

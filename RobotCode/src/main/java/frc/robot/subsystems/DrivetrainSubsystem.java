@@ -434,7 +434,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
       public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        odometry.resetPosition(pose, ahrs.getRotation2d());
+        //odometry.resetPosition(pose, ahrs.getRotation2d());
       }
     
       public void tankDriveVolts(double leftVolts, double rightVolts) {
