@@ -302,8 +302,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
      *
      * @return the left drive encoder
      */
-    public CANEncoder getLeftEncoder() {
-        return m_leftEncoder;
+    public double getLeftEncoder() {
+        return m_leftEncoder.getPosition();
     }
 
     /**
@@ -311,9 +311,32 @@ public class DrivetrainSubsystem extends SubsystemBase {
      *
      * @return the right drive encoder
      */
-    public CANEncoder getRightEncoder() {
-        return m_rightEncoder;
+    public double getRightEncoder() {
+        return m_rightEncoder.getPosition();
     }
+
+    public void driveStraight(double speed){
+        m_drive.tankDrive(speed, speed);
+    }
+
+    public void setBrake() {
+
+        left_frontmotor.setIdleMode(IdleMode.kBrake);
+        left_backmotor.setIdleMode(IdleMode.kBrake);
+        right_frontmotor.setIdleMode(IdleMode.kBrake);
+        right_backmotor.setIdleMode(IdleMode.kBrake);
+
+    }
+
+    public void setCoast() {
+
+        left_frontmotor.setIdleMode(IdleMode.kCoast);
+        left_backmotor.setIdleMode(IdleMode.kCoast);
+        right_frontmotor.setIdleMode(IdleMode.kCoast);
+        right_backmotor.setIdleMode(IdleMode.kCoast);
+    
+      }
+    
 
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more

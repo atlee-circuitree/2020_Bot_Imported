@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.drivetrainSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class driveBackwardsCommand extends CommandBase {
 
@@ -10,9 +10,9 @@ public class driveBackwardsCommand extends CommandBase {
   double targetSpeed;
   double encoderReadingLeft;
   double encoderReadingRight;
-  drivetrainSubsystem m_subsystem;
+  DrivetrainSubsystem m_subsystem;
 
-  public driveBackwardsCommand(double targetValue, double speed, drivetrainSubsystem driveSubsystem) {
+  public driveBackwardsCommand(double targetValue, double speed, DrivetrainSubsystem driveSubsystem) {
 
     m_subsystem = driveSubsystem;
     addRequirements(m_subsystem);
