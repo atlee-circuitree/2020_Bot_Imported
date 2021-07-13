@@ -24,11 +24,12 @@ public class levelerMotorSubsystem extends SubsystemBase {
    
   public levelerMotorSubsystem() {
 
-  levelMotor = new CANSparkMax(Constants.barmotor, MotorType.kBrushless);
+  //levelMotor = new CANSparkMax(Constants.barmotor, MotorType.kBrushless);
 
 
   }
   
+  /*
   public void levelLeftMotor() {
 
     levelMotor.set(1); 
@@ -46,5 +47,6 @@ public class levelerMotorSubsystem extends SubsystemBase {
     levelMotor.set(0); 
       
   }
+  */
  
 }

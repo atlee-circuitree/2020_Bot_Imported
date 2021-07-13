@@ -432,10 +432,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
       }
     
-      public void resetOdometry(Pose2d pose) {
-        resetEncoders();
-        //odometry.resetPosition(pose, ahrs.getRotation2d());
-      }
+      //public void resetOdometry(Pose2d pose) {
+      //  resetEncoders();
+      //  odometry.resetPosition(pose, ahrs.getRotation2d());
+      //}
     
       public void tankDriveVolts(double leftVolts, double rightVolts) {
         leftDrive.setVoltage(leftVolts);

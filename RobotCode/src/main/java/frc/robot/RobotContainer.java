@@ -64,12 +64,12 @@ import frc.robot.commands.driveForwardCommand;
 import frc.robot.commands.drivetrainCommand;
 import frc.robot.commands.drivetrainPercentPowerAuto;
 import frc.robot.commands.elevatorMotorCommand;
-import frc.robot.commands.elevatorMoveToAngleMotorCommand;
+//import frc.robot.commands.elevatorMoveToAngleMotorCommand;
 import frc.robot.commands.intakeSpitballMotorCommand;
 import frc.robot.commands.driveForwardCommand;
 import frc.robot.commands.intakeTakeballMotorCommand;
-import frc.robot.commands.levelerLeftMotorCommand;
-import frc.robot.commands.levelerRightMotorCommand;
+//import frc.robot.commands.levelerLeftMotorCommand;
+//import frc.robot.commands.levelerRightMotorCommand;
 import frc.robot.commands.limelightAutoAimCommand;
 import frc.robot.commands.openShooterPnumaticCommand;
 import frc.robot.commands.runShooter50MotorCommand;
@@ -79,12 +79,12 @@ import frc.robot.commands.runUntilNotObstructedSensorCommand;
 import frc.robot.commands.runUntilObstructedSensorCommand;
 import frc.robot.commands.shooterOnlyConveyorMotorCommand;
 import frc.robot.commands.shooterOnlyMotorCommand;
-import frc.robot.commands.spinWheelMotorCommand;
+//import frc.robot.commands.spinWheelMotorCommand;
 import frc.robot.commands.stopConveyorMotorCommand;
 import frc.robot.commands.stopShooterMotorCommand;
 import frc.robot.commands.straightenballsCommand;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.IMUSubsystem;
+//import frc.robot.subsystems.IMUSubsystem;
 import frc.robot.subsystems.LidarSubsystem;
 import frc.robot.subsystems.ballObstructionSensorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -93,7 +93,7 @@ import frc.robot.subsystems.levelerMotorSubsystem;
 import frc.robot.subsystems.shooterMotorSubsystem;
 import frc.robot.subsystems.shooterIntakeSubsystem;
 import frc.robot.subsystems.shooterAndKickoutPnumaticSubsystem;
-import frc.robot.subsystems.wheelMotorSubsystem;
+//import frc.robot.subsystems.wheelMotorSubsystem;
 import frc.robot.subsystems.shooterMotorSubsystem.ShooterMotorStatus;
 import frc.robot.Constants;
 import frc.robot.subsystems.climbPnumaticSubsystem;
@@ -143,8 +143,6 @@ public class RobotContainer {
 
   private final LimeLightSubsystem s_limelightSubsystem = new LimeLightSubsystem();
 
-  private final IMUSubsystem s_imuSubsystem = new IMUSubsystem();
-
   private final LidarSubsystem s_lidarSubsystem = new LidarSubsystem();
 
   // private final autonomusCommand2020 m_autonomusCommand2020 = new
@@ -158,7 +156,7 @@ public class RobotContainer {
 
   private final ballObstructionSensorSubsystem m_ballObstructionSensorSubsystem = new ballObstructionSensorSubsystem();
 
-  private final wheelMotorSubsystem m_wheelMotorSubsystem = new wheelMotorSubsystem();
+  //private final wheelMotorSubsystem m_wheelMotorSubsystem = new wheelMotorSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -232,13 +230,13 @@ public class RobotContainer {
   private final shooterOnlyMotorCommand m_shooterOnlyMotorCommand = new shooterOnlyMotorCommand(
       m_shooterMotorSubsystem);
    
-  private final spinWheelMotorCommand m_spinWheelMotorCommand = new spinWheelMotorCommand(m_wheelMotorSubsystem);
+  //private final spinWheelMotorCommand m_spinWheelMotorCommand = new spinWheelMotorCommand(m_wheelMotorSubsystem);
 
-  private final levelerLeftMotorCommand m_levelerLeftMotorCommand = new levelerLeftMotorCommand(
-      m_levelerMotorSubsystem);
+  //private final levelerLeftMotorCommand m_levelerLeftMotorCommand = new levelerLeftMotorCommand(
+    //  m_levelerMotorSubsystem);
 
-  private final levelerRightMotorCommand m_levelerRightMotorCommand = new levelerRightMotorCommand(
-      m_levelerMotorSubsystem);
+  //private final levelerRightMotorCommand m_levelerRightMotorCommand = new levelerRightMotorCommand(
+      //m_levelerMotorSubsystem);
 
   private final ballObstructionSensorCommand m_BallObstructionSensorCommand = new ballObstructionSensorCommand(
       m_ballObstructionSensorSubsystem);
@@ -426,10 +424,6 @@ public class RobotContainer {
 
   private final SequentialCommandGroup m_killPlayer2WithConveyor = new SequentialCommandGroup(m_KillMotorsDriver2, m_stopConveyorMotorCommand2);
 
-  private final elevatorMoveToAngleMotorCommand c_ElevatorMoveToAngle_24_MotorCommand = new elevatorMoveToAngleMotorCommand(m_elevatorMotorSubsystem, s_imuSubsystem, 24);
-
-  private final elevatorMoveToAngleMotorCommand c_ElevatorMoveToAngle_36_MotorCommand = new elevatorMoveToAngleMotorCommand(m_elevatorMotorSubsystem, s_imuSubsystem, 36);
-
   public static Object driveRobot;
 
   public static RobotContainer m_RobotContainer;
@@ -520,7 +514,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     DriverA.whenPressed(new SequentialCommandGroup(
-        new elevatorMoveToAngleMotorCommand(m_elevatorMotorSubsystem, s_imuSubsystem, 24), 
         new openShooterPnumaticCommand(m_shooterPnumaticSubsystem), 
         new runShooterVelocityMotorCommand(m_shooterMotorSubsystem, -3500)));
     DriverB.whileHeld(m_stopShooterMotorCommand);
@@ -528,8 +521,8 @@ public class RobotContainer {
     DriveLeftTrigger.whileHeld(m_intakefulltakeball);
     DriveRightTrigger.whileHeld(m_intakefullspitballDriver1);
     DriverY.whileHeld(m_straightenballsCommand);
-    DriverR.whileHeld(m_levelerLeftMotorCommand);
-    DriverL.whileHeld(m_levelerRightMotorCommand);
+    //DriverR.whileHeld(m_levelerLeftMotorCommand);
+    //DriverL.whileHeld(m_levelerRightMotorCommand);
     Driver1Start.whenPressed(m_KillMotorsDriver1);
 
     Driver2A.whenPressed(m_runConveyorWithObstructionAndVelocity);
@@ -553,8 +546,6 @@ public class RobotContainer {
     FightStickL3.whenPressed(m_climbArmDownPnumaticCommand);
     FightStickR3.whenPressed(m_CloseBeforeShoot);
     FightStickL1.whenPressed(m_climbHookRetractPnumaticCommand);
-    FightStickOPTIONS.whenPressed(c_ElevatorMoveToAngle_24_MotorCommand.withTimeout(5));
-    FightStickSHARE.whenPressed(c_ElevatorMoveToAngle_36_MotorCommand.withTimeout(5));
     
   }
 
@@ -570,277 +561,15 @@ public class RobotContainer {
       return m_runConveyorWithObstructionAndVelocity;
   }
 
-  public Command GetTestTrajectory()
-  {
-      // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-    new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter/2,  //max velocity
-        Constants.kaVoltSecondsSquaredPerMeter), //max acceleration
-        Constants.kDriveKinematics,  //track width
-        10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-    
-    config.setReversed(false);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
-        // Pass config
-        config
-    );
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        m_drivetrainSubsystem::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts,
-            Constants.kvVoltSecondsPerMeter/2,
-            Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-        m_drivetrainSubsystem::getWheelSpeeds,
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrainSubsystem::tankDriveVolts,
-        m_drivetrainSubsystem
-    );
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
-  }
-
-  public Command GetTestTrajectoryShort() {
-      // Create a voltage constraint to ensure we don't accelerate too fast
-    
-      var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter,  //max velocity
-        Constants.kaVoltSecondsSquaredPerMeter), //max acceleration
-        Constants.kDriveKinematics,  //track width
-        10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-    
-    config.setReversed(false);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        List.of(
-            new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-            new Pose2d(3, 0, Rotation2d.fromDegrees(0))
-        ),
-        /*
-        new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(0.5, 0),
-            new Translation2d(1, 0)
-        ), 
-        
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
-        // Pass config
-        */
-        config );
-
-    /* Trajectory shootAndGoToTrench = TrajectoryGenerator.generateTrajectory(
-        // Start facing toward the shooter
-        new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-        
-        List.of(
-            //Midpoint for the trench
-            new Translation2d(-3, 3)
-        ),
-        // End in the trench facing forward.
-        new Pose2d(-5, 5, Rotation2d.fromDegrees(0)),
-        // Pass config
-        config
-
-        
-    ); */
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        m_drivetrainSubsystem::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts,
-            Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-        m_drivetrainSubsystem::getWheelSpeeds,
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrainSubsystem::tankDriveVolts,
-        m_drivetrainSubsystem
-    );
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
-  }
-
-  public Command GetTestBallRunTrajectory()
-  {
-      // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-    new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter/2,  //max velocity - reduced by half
-        Constants.kaVoltSecondsSquaredPerMeter), //max acceleration
-        Constants.kDriveKinematics,  //track width
-        10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-    
-    config.setReversed(true);  //running backwards
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(3.048, -2.4, Rotation2d.fromDegrees(180)),
-        // intermediate waypoint to avoid other robots
-        List.of(
-            new Translation2d(5.124, -0.722)
-        ),
-        // end just under the wheel
-        new Pose2d(8.605, -0.722, Rotation2d.fromDegrees(180)),
-        // Pass config
-        config
-    );
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        m_drivetrainSubsystem::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts,
-            Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-        m_drivetrainSubsystem::getWheelSpeeds,
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrainSubsystem::tankDriveVolts,
-        m_drivetrainSubsystem
-    );
-
-    //Set the robot position to the start of the path, run path following command, then stop at the end.  
-    //This allows us to determine where on the field our robot is starting at
-    InstantCommand positionCommand = new InstantCommand(
-        () -> m_drivetrainSubsystem.resetOdometry(new Pose2d(3.048, -2.4, Rotation2d.fromDegrees(180))), m_drivetrainSubsystem);
-    return positionCommand.andThen(ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0)));
-  }
-
-  public Command GetTestReturnBallRunTrajectory()
-  {
-      // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-    new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter/2,  //max velocity - reduced by half
-        Constants.kaVoltSecondsSquaredPerMeter), //max acceleration
-        Constants.kDriveKinematics,  //track width
-        10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-    
-    config.setReversed(false);  //running forwards on the way back
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start just under the wheel
-        new Pose2d(8.605, -0.722, Rotation2d.fromDegrees(180)),
-        // Must have a middle waypoint
-        List.of(
-            new Translation2d(5.881, -1.907)
-        ),
-        // End up where we started - in front of the target
-        new Pose2d(3.048, -2.4, Rotation2d.fromDegrees(180)),
-        // Pass config
-        config
-    );
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        m_drivetrainSubsystem::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts,
-            Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-        m_drivetrainSubsystem::getWheelSpeeds,
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrainSubsystem::tankDriveVolts,
-        m_drivetrainSubsystem
-    );
-
-    //We start wherever the robot is currently, because we want this path to run relative to where the robot started and stopped, not randomly based on coasting
-    return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
-  }
-
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    //return (GetTestTrajectoryShort());  //S pattern - 1.5m forwards
-    return GenerateEncoderDriveCommand(1, .3);
-    //return (GetTestTrajectory());  //S pattern - 3m forwards
-    //return (GetTestBallRunTrajectory());  //Backwards path - intended to pick up balls from trench
-    //return (GetTestReturnBallRunTrajectory());  //return from picking up balls
-    
-    
-  }
 
   public void DisabledInit()
   {
       //reset pose when disabled - per https://www.chiefdelphi.com/t/trajectory-generation-in-autonomous-path-following-issues/378469/6
-      m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+      //m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
+
+ public Command getAutonomousCommand() {
+        return m_driveFowardsTimerAuto;
+    }
+
 }
