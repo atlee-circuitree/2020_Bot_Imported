@@ -87,6 +87,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         right_backmotor.setInverted(false);
         right_frontmotor.setInverted(false);
 
+        left_frontmotor.setIdleMode(IdleMode.kBrake);
+        left_backmotor.setIdleMode(IdleMode.kBrake);
+        right_backmotor.setIdleMode(IdleMode.kBrake);
+        right_frontmotor.setIdleMode(IdleMode.kBrake);
+
         m_leftEncoder = left_frontmotor.getEncoder();
         m_rightEncoder = right_frontmotor.getEncoder();
 
@@ -101,23 +106,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        // Added 3/6/2020 Panten
-        // Update the odometry in the periodic block
-        if (m_rightEncoder != null) // make sure setup has been called first
-        {
-            double heading = getHeading();
-            double leftPos = m_leftEncoder.getPosition();
-            double rightPos = m_rightEncoder.getPosition();
-
-            m_odometry.update(Rotation2d.fromDegrees(heading), leftPos,
-                rightPos);
-            
-            SmartDashboard.putNumber("Heading", heading);
-            SmartDashboard.putNumber("LeftPos", leftPos);
-            SmartDashboard.putNumber("RightPos", rightPos);
-
-        }
+  
     }
 
     public void driveSetup(CANSparkMax leftFrontMotor, CANSparkMax leftBackMotor, CANSparkMax rightFrontMotor,
@@ -152,7 +141,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void driveRobot(Double X, double Y) {
 
-        robotDrive.arcadeDrive(-Y, X, false);
+        robotDrive.arcadeDrive(-Y, X, true);
     }
     public void driveRobotLinear(double X, double Y) {
         robotDrive.arcadeDrive(-Y, X, false);
@@ -160,18 +149,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void setBrakes()
     {
-        left_frontmotor.setIdleMode(IdleMode.kBrake);
+        /*left_frontmotor.setIdleMode(IdleMode.kBrake);
         left_backmotor.setIdleMode(IdleMode.kBrake);
         right_backmotor.setIdleMode(IdleMode.kBrake);
-        right_frontmotor.setIdleMode(IdleMode.kBrake);
+        right_frontmotor.setIdleMode(IdleMode.kBrake);*/
     }
 
     public void disableBrakes()
     {
-        left_frontmotor.setIdleMode(IdleMode.kCoast);
+        /*left_frontmotor.setIdleMode(IdleMode.kCoast);
         left_backmotor.setIdleMode(IdleMode.kCoast);
         right_backmotor.setIdleMode(IdleMode.kCoast);
-        right_frontmotor.setIdleMode(IdleMode.kCoast);
+        right_frontmotor.setIdleMode(IdleMode.kCoast);*/
     }
 
     public void driveBackwards() {
@@ -310,19 +299,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void setBrake() {
 
-        left_frontmotor.setIdleMode(IdleMode.kBrake);
+        /*left_frontmotor.setIdleMode(IdleMode.kBrake);
         left_backmotor.setIdleMode(IdleMode.kBrake);
         right_frontmotor.setIdleMode(IdleMode.kBrake);
-        right_backmotor.setIdleMode(IdleMode.kBrake);
+        right_backmotor.setIdleMode(IdleMode.kBrake);*/
 
     }
 
     public void setCoast() {
 
-        left_frontmotor.setIdleMode(IdleMode.kCoast);
+        /*left_frontmotor.setIdleMode(IdleMode.kCoast);
         left_backmotor.setIdleMode(IdleMode.kCoast);
         right_frontmotor.setIdleMode(IdleMode.kCoast);
-        right_backmotor.setIdleMode(IdleMode.kCoast);
+        right_backmotor.setIdleMode(IdleMode.kCoast);*/
     
       }
     

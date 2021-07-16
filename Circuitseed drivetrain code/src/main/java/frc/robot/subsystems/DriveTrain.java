@@ -35,9 +35,9 @@ public class DriveTrain extends SubsystemBase {
     leftRearMotor = new CANSparkMax(3, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(4, MotorType.kBrushless);
     
-    rightRearMotor.setInverted(true);
-    rightFrontMotor.setInverted(true);
-    leftRearMotor.setInverted(true);
+    rightRearMotor.setInverted(false);
+    rightFrontMotor.setInverted(false);
+    leftRearMotor.setInverted(false);
 
     leftFrontMotor.setIdleMode(IdleMode.kBrake);
     rightFrontMotor.setIdleMode(IdleMode.kBrake);
@@ -60,7 +60,7 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void driveWithJoystick(double speed, double X, double Y){
-    drive.arcadeDrive(Y, -X, false);
+    drive.arcadeDrive(-Y, X, false);
     //drive.tankDrive(X, Y);
   }
   public void driveForward(double speed){
