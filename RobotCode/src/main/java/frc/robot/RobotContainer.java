@@ -164,6 +164,9 @@ public class RobotContainer {
       m_climbPnumaticSubsystem);
   private final climbArmDownPnumaticCommand m_climbArmDownPnumaticCommand = new climbArmDownPnumaticCommand(
       m_climbPnumaticSubsystem);
+
+  private final climbArmDownPnumaticCommand m_climbArmDownPnumaticCommand2 = new climbArmDownPnumaticCommand(
+        m_climbPnumaticSubsystem);
   private final climbHookExtendPnumaticCommand m_climbHookExtendPnumaticCommand = new climbHookExtendPnumaticCommand(
       m_climbPnumaticSubsystem);
   private final climbHookRetractPnumaticCommand m_climbHookRetractPnumaticCommand = new climbHookRetractPnumaticCommand(
@@ -456,7 +459,7 @@ public class RobotContainer {
   Button Drive2LeftTrigger = new Button(() -> Xbox2.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.5);
   Button Drive2RightTrigger = new Button(() -> Xbox2.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.5);
 
-  JoystickButton FightStickB = new JoystickButton(Fightstick, 3);
+  JoystickButton FightStickB = new JoystickButton(Fightstick, 2);
   JoystickButton FightStickY = new JoystickButton(Fightstick, 4);
   JoystickButton FightStickLB = new JoystickButton(Fightstick, 5);
   JoystickButton FightStickRB = new JoystickButton(Fightstick, 6);
@@ -539,10 +542,10 @@ public class RobotContainer {
     Drive2RightTrigger.whileHeld(new SequentialCommandGroup(new runShooterVelocityMotorCommand(m_shooterMotorSubsystem, 12500), GenerateShootCommand()));
     Drive2LeftTrigger.whileHeld(new SequentialCommandGroup(new runShooterVelocityMotorCommand(m_shooterMotorSubsystem, 8500), GenerateShootCommand()));
     
-    //FightStickB.whenPressed(m_kickoutPnumaticCommand);
+    FightStickB.whenPressed(m_climbArmDownPnumaticCommand);
     FightStickY.whenPressed(m_climbHookExtendPnumaticCommand);
     FightStickRB.whenPressed(m_climbArmUpPnumaticCommand);
-    //FightStickRT.whenPressed(m_kickoutPnumaticCommand);
+    //FightStickRT.whenPressed(m_climbArmDownPnumaticCommand);
     FightStickL3.whenPressed(m_climbArmDownPnumaticCommand);
     FightStickR3.whenPressed(m_CloseBeforeShoot);
     FightStickL1.whenPressed(m_climbHookRetractPnumaticCommand);

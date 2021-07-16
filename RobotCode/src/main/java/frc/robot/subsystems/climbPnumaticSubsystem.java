@@ -56,13 +56,7 @@ public class climbPnumaticSubsystem extends SubsystemBase {
 
   //moves the climbing arm into the down position
   public void climbArmDown() {
-
-     
-
     climbArmPnumatic.set(Value.kReverse);
-
- 
-    
   }
 
   //extends the hook
