@@ -57,34 +57,19 @@ public class climbPnumaticSubsystem extends SubsystemBase {
   //moves the climbing arm into the down position
   public void climbArmDown() {
 
-    if (climbHookPosition == ClimbHookPosition.RETRACTED) {
+     
 
     climbArmPnumatic.set(Value.kReverse);
 
-    } else {
-
-      System.out.println("Error, Climb Hook is extended. Must retract");
-
-    }
-
-    climbArmPosition = ClimbArmPosition.DOWN;
+ 
     
   }
 
   //extends the hook
   public void climbHookExtend() {
 
-    if (climbArmPosition == ClimbArmPosition.UP) {
-
      climbHookLeftPnumatic.set(Value.kForward);
-
-    } else {
-
-      System.out.println("Error, Climb Arm is not up. Must raise");
-
-    }
-
-    climbHookPosition = ClimbHookPosition.EXTENDED;
+     climbHookRightPnumatic.set(Value.kForward);
 
   }
 
@@ -92,8 +77,7 @@ public class climbPnumaticSubsystem extends SubsystemBase {
   public void climbHookRetract() {
 
     climbHookLeftPnumatic.set(Value.kReverse);
-     
-    climbHookPosition = ClimbHookPosition.RETRACTED;
+    climbHookRightPnumatic.set(Value.kReverse);
 
   }
 
