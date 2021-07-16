@@ -569,7 +569,7 @@ public class RobotContainer {
   }
 
  public Command getAutonomousCommand() {
-        return m_driveFowardsTimerAuto;
+        return GenerateEncoderDriveCommand(30, .3);
     }
 
 }
