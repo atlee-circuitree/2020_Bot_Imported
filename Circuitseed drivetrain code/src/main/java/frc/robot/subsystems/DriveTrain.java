@@ -35,7 +35,9 @@ public class DriveTrain extends SubsystemBase {
     leftRearMotor = new CANSparkMax(3, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(4, MotorType.kBrushless);
     
-    leftFrontMotor.setInverted(true);
+    rightRearMotor.setInverted(true);
+    rightFrontMotor.setInverted(true);
+    leftRearMotor.setInverted(true);
 
     leftFrontMotor.setIdleMode(IdleMode.kBrake);
     rightFrontMotor.setIdleMode(IdleMode.kBrake);
@@ -59,6 +61,7 @@ public class DriveTrain extends SubsystemBase {
   }
   public void driveWithJoystick(double speed, double X, double Y){
     drive.arcadeDrive(Y, -X, false);
+    //drive.tankDrive(X, Y);
   }
   public void driveForward(double speed){
     drive.tankDrive(speed, speed);
