@@ -474,7 +474,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    setUpDrive();
+    //setUpDrive();
 
     configureButtonBindings();
   }
@@ -496,17 +496,7 @@ public class RobotContainer {
 
   }
 
-  public void setUpDrive() {
-
-    CANSparkMax leftFrontMotor = new CANSparkMax(Constants.driveFrontleftMotor, MotorType.kBrushless);
-    CANSparkMax leftBackMotor = new CANSparkMax(Constants.driveBackleftMotor, MotorType.kBrushless);
-
-    CANSparkMax rightFrontMotor = new CANSparkMax(Constants.driveFrontrightMotor, MotorType.kBrushless);
-    CANSparkMax rightBackMotor = new CANSparkMax(Constants.driveBackrightMotor, MotorType.kBrushless);
-
-    m_drivetrainSubsystem.driveSetup(leftFrontMotor, leftBackMotor, rightFrontMotor, rightBackMotor);
-    
-  }
+  
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by

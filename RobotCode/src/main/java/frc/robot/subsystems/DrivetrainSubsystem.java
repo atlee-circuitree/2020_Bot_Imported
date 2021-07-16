@@ -30,6 +30,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -76,6 +77,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     public DrivetrainSubsystem() {
 
+        left_frontmotor = new CANSparkMax(Constants.driveFrontleftMotor, MotorType.kBrushless);
+        left_backmotor = new CANSparkMax(Constants.driveBackleftMotor, MotorType.kBrushless);
+        right_frontmotor = new CANSparkMax(Constants.driveFrontrightMotor, MotorType.kBrushless);
+        right_backmotor = new CANSparkMax(Constants.driveBackrightMotor, MotorType.kBrushless);
+
+        left_backmotor.setInverted(false);
+        left_frontmotor.setInverted(false);
+        right_backmotor.setInverted(false);
+        right_frontmotor.setInverted(false);
+
+        m_leftEncoder = left_frontmotor.getEncoder();
+        m_rightEncoder = right_frontmotor.getEncoder();
+
+
+        leftDrive = new SpeedControllerGroup(left_frontmotor, left_backmotor);
+        rightDrive = new SpeedControllerGroup(right_frontmotor, right_backmotor);
+        m_drive = new DifferentialDrive(leftDrive, rightDrive);
+        robotDrive = new DifferentialDrive(leftDrive, rightDrive);
+
         ahrs = new AHRS(SPI.Port.kMXP);
     }
 
@@ -102,25 +122,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void driveSetup(CANSparkMax leftFrontMotor, CANSparkMax leftBackMotor, CANSparkMax rightFrontMotor,
             CANSparkMax rightBackMotor) {
-        m_leftEncoder = leftFrontMotor.getEncoder();
-        m_rightEncoder = rightFrontMotor.getEncoder();
-
-        left_frontmotor = leftFrontMotor;
-        left_backmotor = leftBackMotor;
-        right_frontmotor = rightFrontMotor;
-        right_backmotor = rightBackMotor;
-
-        left_backmotor.setInverted(false);
-        left_frontmotor.setInverted(false);
-        right_backmotor.setInverted(false);
-        right_frontmotor.setInverted(false);
-
-
-
-        leftDrive = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
-        rightDrive = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
-        m_drive = new DifferentialDrive(leftDrive, rightDrive);
-        robotDrive = new DifferentialDrive(leftDrive, rightDrive);
+        
 
         // code added for pathfinder by Panten 3/6/2020
         // Sets the distance per pulse for the encoders
