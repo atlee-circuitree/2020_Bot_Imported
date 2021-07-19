@@ -106,6 +106,7 @@ import frc.robot.commands.moveShooterDownMotorCommand;
 import frc.robot.commands.moveShooterUpMotorCommand;
 import frc.robot.commands.printPoseCommand;
 import frc.robot.commands.robotTurnToAngleCommand;
+import frc.robot.commands.rotateToAngleCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -554,6 +555,14 @@ public class RobotContainer {
       return m_runConveyorWithObstructionAndVelocity;
   }
 
+  public Command GenerateTurnCommand(double targetAngle, double maxSpeed, double timeout) {
+
+    Command m_rotateToAngleCommand = new rotateToAngleCommand(targetAngle, maxSpeed, timeout, m_drivetrainSubsystem);
+
+    return m_rotateToAngleCommand;
+
+  }
+
 
   public void DisabledInit()
   {
@@ -562,7 +571,8 @@ public class RobotContainer {
   }
 
  public Command getAutonomousCommand() {
-        return GenerateEncoderDriveCommand(36, .3);
+        //return GenerateEncoderDriveCommand(25, .3);
+        return GenerateTurnCommand(90, .3, 99);
     }
 
 }

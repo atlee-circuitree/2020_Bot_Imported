@@ -197,6 +197,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     }
 
+    public void tankDrive(double leftSpeed, double rightSpeed){
+        
+        tankDrive(leftSpeed, rightSpeed);
+
+    }
+
     public void printPose() {
 
         System.out.println(getPose());
