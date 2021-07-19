@@ -37,7 +37,7 @@ public class robotTurnToAngleCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double turnValue = MathUtil.clamp(turnController.calculate(m_driveSubsystem.getContinuousAngle()), -0.1, 0.1);
+        double turnValue = MathUtil.clamp(turnController.calculate(m_driveSubsystem.getContinuousAngle()), -0.25, 0.25);
         m_driveSubsystem.driveRobotLinear(turnValue, 0d);
     }
 

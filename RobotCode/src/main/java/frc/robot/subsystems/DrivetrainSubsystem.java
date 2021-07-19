@@ -183,6 +183,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     }
 
+    public void turnLeftSetPercentAuto(double Power) {
+
+        leftDrive.set(Power);
+        rightDrive.set(Power);
+
+    }
+
     public void driveSetPercentForwards(double Power) {
 
         leftDrive.set(-Power);
@@ -198,7 +205,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed){
-        
+
         tankDrive(leftSpeed, rightSpeed);
 
     }

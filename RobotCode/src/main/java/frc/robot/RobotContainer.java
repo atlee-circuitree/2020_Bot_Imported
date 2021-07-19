@@ -555,11 +555,11 @@ public class RobotContainer {
       return m_runConveyorWithObstructionAndVelocity;
   }
 
-  public Command GenerateTurnCommand(double targetAngle, double maxSpeed, double timeout) {
+  public Command GenerateTurnCommand(double angle) {
 
-    Command m_rotateToAngleCommand = new rotateToAngleCommand(targetAngle, maxSpeed, timeout, m_drivetrainSubsystem);
+    Command m_TurnToAngleCommand = new robotTurnToAngleCommand(m_drivetrainSubsystem, angle);
 
-    return m_rotateToAngleCommand;
+    return m_TurnToAngleCommand;
 
   }
 
@@ -571,8 +571,8 @@ public class RobotContainer {
   }
 
  public Command getAutonomousCommand() {
-        //return GenerateEncoderDriveCommand(25, .3);
-        return GenerateTurnCommand(90, .3, 99);
+        return GenerateTurnCommand(90);
+
     }
 
 }
