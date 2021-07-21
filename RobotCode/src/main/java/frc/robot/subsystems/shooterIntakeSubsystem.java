@@ -87,6 +87,19 @@ public void stopConveyor(){
 
 }
 
+public void setConveyorSpeed(double speed) {
+
+  conveyorbeltRight.set(-speed);
+  conveyorbeltLeft.set(speed);
+
+}
+
+public void setFeederSpeed(double speed) {
+
+  intake.set(speed);
+   
+}
+
 public void conveyorOnly(){
 
   conveyorbeltRight.set(-.5);

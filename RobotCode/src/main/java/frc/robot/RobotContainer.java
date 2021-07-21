@@ -60,10 +60,12 @@ import frc.robot.commands.climbHookRetractPnumaticCommand;
 import frc.robot.commands.closeShooterPnumaticCommand;
 import frc.robot.commands.conveyorbeltObstructedCommand;
 import frc.robot.commands.conveyorbeltclearCommand;
+import frc.robot.commands.driveBackwardsCommand;
 import frc.robot.commands.driveForwardCommand;
 import frc.robot.commands.drivetrainCommand;
 import frc.robot.commands.drivetrainPercentPowerAuto;
 import frc.robot.commands.elevatorMotorCommand;
+import frc.robot.commands.elevatorRunToPositionMotorCommand;
 //import frc.robot.commands.elevatorMoveToAngleMotorCommand;
 import frc.robot.commands.intakeSpitballMotorCommand;
 import frc.robot.commands.driveForwardCommand;
@@ -107,6 +109,8 @@ import frc.robot.commands.moveShooterUpMotorCommand;
 import frc.robot.commands.printPoseCommand;
 import frc.robot.commands.robotTurnToAngleCommand;
 import frc.robot.commands.rotateToAngleCommand;
+import frc.robot.commands.runConveyorBySpeedMotorCommand;
+import frc.robot.commands.runFeederBySpeedMotorCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -297,34 +301,6 @@ public class RobotContainer {
 
   private final TimerCommand m_shooterConveyorTimerCommand = new TimerCommand(2000);
 
-  public Command GenerateEncoderDriveCommand(double inches, double speed)
-  {
-
-      double PPR;
-      double GearReduction;
-      double WheelDiameter;
-      double Pi;
-      double CPI;
-
-      PPR = 42;
-      GearReduction = 10.75;
-      WheelDiameter = 8;
-      Pi = 3.1415;
-      CPI = (PPR * GearReduction) / (WheelDiameter * Pi);
-      //451.5, 25.132
-
-
-      double encoder = (inches / 42) * CPI;
-
-      System.out.print("Encoder Target, ");
-      System.out.print(encoder); 
-
-      Command m_driveStraightUntilEncoderValueCommand = new driveForwardCommand(encoder, speed, m_drivetrainSubsystem);
-
-      return m_driveStraightUntilEncoderValueCommand;
-      
-  }
-
   private final runShooter50MotorCommand m_runShooter50MotorCommandAuto = new runShooter50MotorCommand(
       m_shooterMotorSubsystem, true);
 
@@ -488,6 +464,9 @@ public class RobotContainer {
     m_drivetrainSubsystem.setDefaultCommand(c_dDrivetrainCommand);
     m_elevatorMotorSubsystem.setDefaultCommand(c_delevatorMotorCommand);
     m_shooterMotorSubsystem.shooterMotorStatus = ShooterMotorStatus.IS_NOT_RUNNING;
+    GenerateShootSpeedCommand(0);
+    m_drivetrainSubsystem.resetEncoders();
+    m_elevatorMotorSubsystem.resetEncoders();
 
      
     //m_constants.airCompressor = new Compressor(1);
@@ -550,10 +529,67 @@ public class RobotContainer {
 
       ParallelDeadlineGroup m_runConveyorWithObstructionCheckGenerated = new ParallelDeadlineGroup(new runUntilNotObstructedSensorCommand(m_ballObstructionSensorSubsystem).withTimeout(1), new shooterOnlyConveyorMotorCommand(m_shooterIntakeSubsystem));
  
-      SequentialCommandGroup m_runConveyorWithObstructionAndVelocity = new SequentialCommandGroup(m_shootWaitObstructionParallelGenerated, new checkForShooterVelocity(m_shooterMotorSubsystem).withTimeout(0.5), m_runConveyorWithObstructionCheckGenerated);
+      SequentialCommandGroup m_runConveyorWithObstructionAndVelocity = new SequentialCommandGroup(m_runConveyorWithObstructionCheckGenerated);
 
       return m_runConveyorWithObstructionAndVelocity;
   }
+
+  public Command GenerateEncoderDriveCommand(double inches, double speed)
+  {
+
+      double PPR;
+      double GearReduction;
+      double WheelDiameter;
+      double Pi;
+      double CPI;
+
+      PPR = 42;
+      GearReduction = 10.75;
+      WheelDiameter = 8;
+      Pi = 3.141592653589793238;
+      CPI = (PPR * GearReduction) / (WheelDiameter * Pi);
+      //451.5, 25.132
+
+
+      double encoder = (inches / 42) * CPI;
+
+      System.out.print("Encoder Target, ");
+      System.out.print(encoder); 
+
+      Command m_driveStraightUntilEncoderValueCommand = new driveForwardCommand(encoder, speed, m_drivetrainSubsystem);
+
+      return m_driveStraightUntilEncoderValueCommand;
+      
+  }
+
+  public Command GenerateEncoderDriveBackwardsCommand(double inches, double speed)
+  {
+
+      double PPR;
+      double GearReduction;
+      double WheelDiameter;
+      double Pi;
+      double CPI;
+
+      PPR = 42;
+      GearReduction = 10.75;
+      WheelDiameter = 8;
+      Pi = 3.141592653589793238;
+      CPI = (PPR * GearReduction) / (WheelDiameter * Pi);
+      //451.5, 25.132
+
+
+      double encoder = (inches / 42) * CPI;
+
+      System.out.print("Encoder Target, ");
+      System.out.print(encoder); 
+
+      Command m_driveBackwardsUntilEncoderValueCommand = new driveBackwardsCommand(encoder, speed, m_drivetrainSubsystem);
+
+      return m_driveBackwardsUntilEncoderValueCommand;
+      
+  }
+
 
   public Command GenerateTurnCommand(double angle) {
 
@@ -563,16 +599,102 @@ public class RobotContainer {
 
   }
 
+  public Command GenerateTimerCommand(double seconds) {
+
+   Command m_generatedTimerCommand = new TimerCommand(seconds * 1000);
+
+   return m_generatedTimerCommand;
+
+  }
+
+  public Command GenerateShootSpeedCommand(double speed) { 
+
+    Command m_generatedShooterMotorCommand = new runShooterVelocityMotorCommand(m_shooterMotorSubsystem, speed);
+
+    return m_generatedShooterMotorCommand;
+           
+  }
+
+  public Command GenerateConveyerCommand(boolean IsOn) {
+
+    double targetSpeed;  
+
+    if (IsOn == true) {
+
+      targetSpeed = .3;
+
+    } else {
+
+      targetSpeed = 0;
+
+    }
+
+    Command m_generatedConveyorCommand = new runConveyorBySpeedMotorCommand(targetSpeed, m_shooterIntakeSubsystem);
+
+    return m_generatedConveyorCommand;
+
+  }
+
+  public Command GenerateShooterOpenCommand() {
+
+    Command m_generatedOpenShooterCommand = new openShooterPnumaticCommand(m_shooterPnumaticSubsystem);
+
+    return m_generatedOpenShooterCommand;
+
+  }
+
+  public Command GenerateShooterCloseCommand() {
+
+    Command m_generatedCloseShooterCommand = new closeShooterPnumaticCommand(m_shooterPnumaticSubsystem);
+
+    return m_generatedCloseShooterCommand;
+
+  }
+
+  public Command GenerateFeederCommand(boolean IsOn) {
+
+    double targetSpeed;  
+
+    if (IsOn == true) {
+
+      targetSpeed = .7;
+
+    } else {
+
+      targetSpeed = 0;
+
+    }
+
+    Command m_generatedFeederCommand = new runFeederBySpeedMotorCommand(targetSpeed, m_shooterIntakeSubsystem);
+
+    return m_generatedFeederCommand;
+
+  }
+
+  public Command GenerateElevatorCommand(double value, double speed) {
+
+   Command m_generatedElevatorCommand = new elevatorRunToPositionMotorCommand(value, speed, m_elevatorMotorSubsystem);
+
+   return m_generatedElevatorCommand;
+
+  }
+
+  SequentialCommandGroup m_testAutoTurn = new SequentialCommandGroup(GenerateTurnCommand(90), GenerateTimerCommand(3), GenerateTurnCommand(180), GenerateTimerCommand(3), GenerateTurnCommand(270));
+  SequentialCommandGroup m_Auto = new SequentialCommandGroup(GenerateTurnCommand(30), GenerateTimerCommand(3), GenerateEncoderDriveBackwardsCommand(36, .3));
+  ParallelCommandGroup SixBallAuto1 = new ParallelCommandGroup(GenerateShooterCloseCommand(), GenerateShootSpeedCommand(6000).withTimeout(2), GenerateConveyerCommand(true).withTimeout(2));
+  ParallelCommandGroup SixBallAuto2 = new ParallelCommandGroup(GenerateElevatorCommand(50, 1), GenerateTurnCommand(30));
+  SequentialCommandGroup SixBallAuto = new SequentialCommandGroup(SixBallAuto1.withTimeout(3), SixBallAuto2);
 
   public void DisabledInit()
   {
       //reset pose when disabled - per https://www.chiefdelphi.com/t/trajectory-generation-in-autonomous-path-following-issues/378469/6
       //m_drivetrainSubsystem.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+      GenerateConveyerCommand(false);
+      GenerateShootSpeedCommand(0);
   }
 
  public Command getAutonomousCommand() {
-        return GenerateTurnCommand(90);
-
+        return SixBallAuto;
     }
 
 }

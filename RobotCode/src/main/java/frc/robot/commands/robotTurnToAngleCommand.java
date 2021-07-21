@@ -16,7 +16,7 @@ public class robotTurnToAngleCommand extends CommandBase {
 
     DrivetrainSubsystem m_driveSubsystem;
     double idealAngle;
-    PIDController turnController = new PIDController(0.03, 0,0);
+    PIDController turnController = new PIDController(0.3, 0.2, 0.05);
 
     
     public robotTurnToAngleCommand(DrivetrainSubsystem drivetrainSubsystem, double targetAngle) {

@@ -37,6 +37,7 @@ public class elevatorMotorCommand extends CommandBase {
   public void execute() {
 
     m_subsystem.runElevator(xbcElevatorController.getY(Hand.kLeft));
+    System.out.println(m_subsystem.getEncoderValue());
 
   }
 

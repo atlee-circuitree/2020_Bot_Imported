@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -19,11 +20,24 @@ import frc.robot.commands.elevatorMotorCommand;
 
 public class elevatorMotorSubsystem extends SubsystemBase {
 
-  CANSparkMax elevatorMotor = null;
+  CANSparkMax elevatorMotor = new CANSparkMax(9, MotorType.kBrushless);
+
+  CANEncoder elevatorEncoder = elevatorMotor.getEncoder();
 
   public elevatorMotorSubsystem() {
 
-  elevatorMotor = new CANSparkMax(Constants.elevatorMotor, MotorType.kBrushless);
+  }
+
+
+public void resetEncoders() {
+
+  elevatorEncoder.setPosition(0);
+
+}
+
+public double getEncoderValue() {
+
+  return elevatorEncoder.getPosition();
 
 }
 

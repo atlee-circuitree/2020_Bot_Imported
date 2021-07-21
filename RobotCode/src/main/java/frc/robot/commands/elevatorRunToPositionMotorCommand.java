@@ -8,23 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.shooterMotorSubsystem;
+import frc.robot.subsystems.elevatorMotorSubsystem;
 
 
-public class runShooterVelocityMotorCommand extends CommandBase {
+public class elevatorRunToPositionMotorCommand extends CommandBase {
 
-  shooterMotorSubsystem m_subsystem;
+  elevatorMotorSubsystem m_subsystem;
+  double encoderReading;
+  double encoderTarget;
+  double speedTarget;
 
-  double TargetVelocity;
-
-  public runShooterVelocityMotorCommand(shooterMotorSubsystem motorSubsystem, double Velocity) {
+  public elevatorRunToPositionMotorCommand(double targetValue, double speed, elevatorMotorSubsystem motorSubsystem) {
      
     super();
     m_subsystem = motorSubsystem;
     addRequirements(m_subsystem);
 
-    TargetVelocity = Velocity;
+    encoderTarget = targetValue;
+    speedTarget = speed;
 
   }
 
@@ -32,29 +35,48 @@ public class runShooterVelocityMotorCommand extends CommandBase {
   @Override
   public void initialize() {
 
-   
-  
+    m_subsystem.resetEncoders();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    m_subsystem.runShooterVelocity(TargetVelocity);
+    encoderReading = m_subsystem.getEncoderValue();
 
+    if (encoderTarget > encoderReading) {
+
+      m_subsystem.runElevator(speedTarget);
+
+    } else if (encoderTarget <= encoderReading) {
+
+      m_subsystem.stopElevator();
+
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    //m_subsystem.runShooterVelocity(0);
+    m_subsystem.stopElevator();
 
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return true;
+  public boolean isFinished()
+   {
+    if (encoderReading <= encoderTarget) {
+
+      return false;
+
+    } else {
+
+      return true;
+
+    }
   }
 }
