@@ -33,7 +33,8 @@ public class runFeederBySpeedMotorCommand extends CommandBase {
         @Override
         public void execute() {
  
-          m_subsystem.setFeederSpeed(speed);  
+          m_subsystem.setFeederSpeed(speed);
+          m_subsystem.setConveyorSpeed(.7); 
 
         }
  

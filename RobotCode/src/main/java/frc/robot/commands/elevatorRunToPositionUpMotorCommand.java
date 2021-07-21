@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.elevatorMotorSubsystem;
 
 
-public class elevatorRunToPositionMotorCommand extends CommandBase {
+public class elevatorRunToPositionUpMotorCommand extends CommandBase {
 
   elevatorMotorSubsystem m_subsystem;
   double encoderReading;
   double encoderTarget;
   double speedTarget;
 
-  public elevatorRunToPositionMotorCommand(double targetValue, double speed, elevatorMotorSubsystem motorSubsystem) {
+  public elevatorRunToPositionUpMotorCommand(double targetValue, double speed, elevatorMotorSubsystem motorSubsystem) {
      
     super();
     m_subsystem = motorSubsystem;
@@ -48,15 +48,14 @@ public class elevatorRunToPositionMotorCommand extends CommandBase {
     if (encoderTarget > encoderReading) {
 
       m_subsystem.runElevator(speedTarget);
-
-    } else if (encoderTarget <= encoderReading) {
-
+  
+    } else {
+  
       m_subsystem.stopElevator();
+  
+    } 
 
-    }
-    
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -73,10 +72,10 @@ public class elevatorRunToPositionMotorCommand extends CommandBase {
 
       return false;
 
-    } else {
+    } else   {
 
       return true;
 
-    }
+    }   
   }
 }

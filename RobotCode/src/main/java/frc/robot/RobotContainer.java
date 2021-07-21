@@ -65,7 +65,8 @@ import frc.robot.commands.driveForwardCommand;
 import frc.robot.commands.drivetrainCommand;
 import frc.robot.commands.drivetrainPercentPowerAuto;
 import frc.robot.commands.elevatorMotorCommand;
-import frc.robot.commands.elevatorRunToPositionMotorCommand;
+import frc.robot.commands.elevatorRunToPositionDownMotorCommand;
+import frc.robot.commands.elevatorRunToPositionUpMotorCommand;
 //import frc.robot.commands.elevatorMoveToAngleMotorCommand;
 import frc.robot.commands.intakeSpitballMotorCommand;
 import frc.robot.commands.driveForwardCommand;
@@ -657,7 +658,7 @@ public class RobotContainer {
 
     if (IsOn == true) {
 
-      targetSpeed = .7;
+      targetSpeed = 1;
 
     } else {
 
@@ -671,19 +672,32 @@ public class RobotContainer {
 
   }
 
-  public Command GenerateElevatorCommand(double value, double speed) {
+  public Command GenerateElevatorUpCommand(double value, double speed) {
 
-   Command m_generatedElevatorCommand = new elevatorRunToPositionMotorCommand(value, speed, m_elevatorMotorSubsystem);
+   Command m_generatedElevatorCommand = new elevatorRunToPositionUpMotorCommand(value, speed, m_elevatorMotorSubsystem);
 
    return m_generatedElevatorCommand;
 
   }
 
+  public Command GenerateElevatorDownCommand(double value, double speed) {
+
+    Command m_generatedElevatorCommand = new elevatorRunToPositionDownMotorCommand(value, speed, m_elevatorMotorSubsystem);
+ 
+    return m_generatedElevatorCommand;
+ 
+   }
+
   SequentialCommandGroup m_testAutoTurn = new SequentialCommandGroup(GenerateTurnCommand(90), GenerateTimerCommand(3), GenerateTurnCommand(180), GenerateTimerCommand(3), GenerateTurnCommand(270));
+
   SequentialCommandGroup m_Auto = new SequentialCommandGroup(GenerateTurnCommand(30), GenerateTimerCommand(3), GenerateEncoderDriveBackwardsCommand(36, .3));
-  ParallelCommandGroup SixBallAuto1 = new ParallelCommandGroup(GenerateShooterCloseCommand(), GenerateShootSpeedCommand(6000).withTimeout(2), GenerateConveyerCommand(true).withTimeout(2));
-  ParallelCommandGroup SixBallAuto2 = new ParallelCommandGroup(GenerateElevatorCommand(50, 1), GenerateTurnCommand(30));
-  SequentialCommandGroup SixBallAuto = new SequentialCommandGroup(SixBallAuto1.withTimeout(3), SixBallAuto2);
+
+  ParallelCommandGroup SixBallAuto1 = new ParallelCommandGroup(GenerateShooterCloseCommand(), GenerateShootSpeedCommand(6000), GenerateConveyerCommand(true).withTimeout(2));
+  ParallelCommandGroup SixBallAuto2 = new ParallelCommandGroup(GenerateElevatorUpCommand(50, 1), GenerateShootSpeedCommand(0), GenerateShooterOpenCommand());
+  ParallelCommandGroup SixBallAuto3 = new ParallelCommandGroup(GenerateFeederCommand(true), GenerateElevatorDownCommand(800, 1), GenerateEncoderDriveBackwardsCommand(48, .45));
+  ParallelCommandGroup SixBallAuto4 = new ParallelCommandGroup(GenerateFeederCommand(false));
+
+  SequentialCommandGroup SixBallAuto = new SequentialCommandGroup(SixBallAuto1.withTimeout(2), SixBallAuto2.withTimeout(2), SixBallAuto3.withTimeout(8), SixBallAuto4.withTimeout(1));
 
   public void DisabledInit()
   {
